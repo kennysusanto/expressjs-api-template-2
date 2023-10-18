@@ -4,6 +4,7 @@
 import express, { Request, Response } from "express";
 import * as ItemService from "./items.service";
 import { BaseItem, Item } from "./item.interface";
+import { authenticateToken } from "../middleware/auths.middleware";
 /**
  * Router Definition
  */
@@ -38,6 +39,9 @@ itemsRouter.get("/:id", async (req: Request, res: Response) => {
       res.status(500).send(e.message);
     }
   });
+
+itemsRouter.use(authenticateToken); // all routes below are using this middleware
+
 // POST items
 itemsRouter.post("/", async (req: Request, res: Response) => {
     try {
